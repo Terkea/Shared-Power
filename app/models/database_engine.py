@@ -1,15 +1,16 @@
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
+from app.models.base import Base
 
-Base = declarative_base()
-
+# For each model import it
 import app.models.User
 
-engine = create_engine('sqlite:///database.db', echo=True)
+# establish the connection
+engine = create_engine('sqlite:///database.sqlite')
+# map the tables
 Base.metadata.create_all(bind=engine)
+# create the session
 Session = sessionmaker(bind=engine)
 
+# GLOBAL VARIABLE
 session = Session()
-
-user = app.models.User()
