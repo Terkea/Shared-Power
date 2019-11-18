@@ -4,6 +4,8 @@
 
 `base` helps us spread classes across files [here](https://stackoverflow.com/questions/7478403/sqlalchemy-classes-across-files)
 
+[Docs for `base`](https://docs.sqlalchemy.org/en/13/orm/tutorial.html#declare-a-mapping)
+
 `for each table` there is gonna be a model in this package
 
 ## Requirements

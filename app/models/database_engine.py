@@ -6,6 +6,7 @@ from app.models.base import Base
 import app.models.User
 
 # establish the connection
+# the engine can be easily changed, for know I left it as SQLite since it's easier when working on a group project
 engine = create_engine('sqlite:///database.sqlite')
 # map the tables
 Base.metadata.create_all(bind=engine)
