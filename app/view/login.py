@@ -1,4 +1,4 @@
-from tkinter import Frame, Label, Text, Entry, Button
+from tkinter import Frame, Label, Entry, Button
 
 
 class Login:
@@ -13,11 +13,12 @@ class Login:
         self.email = Entry(frame).grid(row=0, column=1)
         self.password = Entry(frame).grid(row=1, column=1)
 
-        self.login_button = Button(frame, text="Login").grid(row=2, column=0)
-        self.register_button = Button(frame, text="Create account").grid(row=2, column=1)
+        self.login_button = Button(frame, text="Login", command=self.redirect_app).grid(row=2, column=0)
+        self.register_button = Button(frame, text="Create account", command=self.redirect_register).grid(row=2,
+                                                                                                         column=1)
 
     def redirect_app(self):
-        pass
+        print("app")
 
     def redirect_register(self):
-        pass
+        print("register")
