@@ -2,6 +2,7 @@ import threading
 
 import app.models
 import app.view
+from app.models import session
 
 
 def init_database():
