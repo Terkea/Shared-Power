@@ -3,7 +3,12 @@ from sqlalchemy.orm import sessionmaker, relationship
 from app.models.base import Base
 
 # For each model import it
-import app.models.User
+import app.models.users
+import app.models.bookings
+import app.models.tools
+import app.models.investigation
+import app.models.returns
+import app.models.invoices
 
 # establish the connection
 # the engine can be easily changed, for know I left it as SQLite since it's easier when working on a group project
