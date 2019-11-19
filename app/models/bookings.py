@@ -9,7 +9,7 @@ class Bookings(Base):
 
     id = Column(Integer, primary_key=True)
     condition = Column(String(255))
-    duration_of_booking = Column(String(255))
+    duration_of_booking = Column(String(255), nullable=False)
     tool_id = Column(Integer, ForeignKey('tools.id'), nullable=False)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     # foreign keys

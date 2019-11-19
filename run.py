@@ -18,7 +18,6 @@ def init_gui():
 
 
 if __name__ == '__main__':
-    print(session.query(Users).all())
     # using separate threads for each package to improve the performance
     t = threading.Thread(target=init_database, args=())
     t.daemon = True

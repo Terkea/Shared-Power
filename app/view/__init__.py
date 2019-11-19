@@ -1,2 +1,7 @@
-from app.models.users import Users
-from app.models.database_engine import session
+from tkinter import *
+
+from app.view.login import Login
+
+root = Tk()
+login_frame = Login(root)
+root.mainloop()
