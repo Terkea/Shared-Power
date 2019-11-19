@@ -6,12 +6,16 @@ from app.models.base import *
 
 class Bookings(Base):
     __tablename__ = 'bookings'
+
     id = Column(Integer, primary_key=True)
-    tool_id = Column(Integer, ForeignKey('tools.id'))
-    user_id = Column(Integer, ForeignKey('users.id'))
     condition = Column(String(255))
     duration_of_booking = Column(String(255))
+    tool_id = Column(Integer, ForeignKey('tools.id'), nullable=False)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     # foreign keys
-    returns = relationship("returns")
-    invoices = relationship("invoices")
-    dispatch = relationship("dispatch")
+    returns = relationship("Returns")
+    invoices = relationship("Invoices")
+    dispatch = relationship("Dispatch")
+
+    def __repr__(self):
+        return str(self.__dict__)

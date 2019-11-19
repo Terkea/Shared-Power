@@ -17,6 +17,9 @@ class Users(Base):
     is_supplier = Column(Boolean())
     password = Column(String(255))
     # add the foreign keys
-    tools = relationship("tools")
-    bookings = relationship("bookings")
-    investigation = relationship("investigation")
+    tools = relationship("Tools")
+    bookings = relationship("Bookings")
+    investigation = relationship("Investigation")
+
+    def __repr__(self):
+        return str(self.__dict__)

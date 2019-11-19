@@ -2,7 +2,9 @@ import threading
 
 import app.models
 import app.view
-from app.models import session
+from app.models.database_engine import session
+from app.models.tools import Tools
+from app.models.users import Users
 
 
 def init_database():
@@ -16,6 +18,7 @@ def init_gui():
 
 
 if __name__ == '__main__':
+    print(session.query(Users).all())
     # using separate threads for each package to improve the performance
     t = threading.Thread(target=init_database, args=())
     t.daemon = True
@@ -24,3 +27,4 @@ if __name__ == '__main__':
     t = threading.Thread(target=init_gui, args=())
     t.daemon = True
     t.start()
+
