@@ -3,6 +3,7 @@ import threading
 import app.models
 import app.view
 
+
 def init_database():
     app.models.__init__
 
@@ -20,4 +21,3 @@ if __name__ == '__main__':
     t = threading.Thread(target=init_gui, args=())
     t.daemon = True
     t.start()
-
