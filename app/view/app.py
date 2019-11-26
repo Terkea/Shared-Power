@@ -1,6 +1,13 @@
 import tkinter as tk
 from tkinter import Frame, Label, Entry, Button
 
+from app.view.content_frames.basket import Basket
+from app.view.content_frames.bookings import Bookings
+from app.view.content_frames.invoices import Invoices
+from app.view.content_frames.tools import Tools
+from app.view.content_frames.view_profile import View_Profile
+from app.view.content_frames.welcome import Welcome
+
 
 class App(tk.Frame):
 
@@ -27,8 +34,7 @@ class App(tk.Frame):
         self.view_profile = Frame(self, background='green')
 
         # this is the frame that the user will see when they log in
-        self.content_frame = self.welcome_frame
-
+        self.content_frame = Welcome(self)
 
         # column/row configurations for menu frame
         self.users_menu_frame.grid_columnconfigure(0, minsize=150)
@@ -43,29 +49,25 @@ class App(tk.Frame):
         hello_label = tk.Label(self.users_menu_frame, text='Hello, User').grid(column=0, row=0, sticky='nswe')
 
         view_profile_button = tk.Button(self.users_menu_frame,
-                                        text="View Profile", command=lambda: self.switch_frame(self.view_profile))\
-                                        .grid(column=0, row=1, sticky='nswe')
+                                        text="View Profile", command=lambda: self.switch_frame(View_Profile(self))) \
+            .grid(column=0, row=1, sticky='nswe')
 
-        invoices_button = tk.Button(self.users_menu_frame, command=lambda: self.switch_frame(self.welcome_frame),
+        invoices_button = tk.Button(self.users_menu_frame, command=lambda: self.switch_frame(Invoices(self)),
                                     text="Invoices").grid(column=0, row=2, sticky='nswe')
-        bookings_button = tk.Button(self.users_menu_frame, text="View bookings").grid(column=0, row=3, sticky='nswe')
-        tools_button = tk.Button(self.users_menu_frame, text="Search tools").grid(column=0, row=4, sticky='nswe')
-        basket_button = tk.Button(self.users_menu_frame, text="Basket").grid(column=0, row=5, sticky='nswe')
 
+        bookings_button = tk.Button(self.users_menu_frame, command=lambda: self.switch_frame(Bookings(self)),
+                                    text="View bookings").grid(column=0, row=3, sticky='nswe')
 
+        tools_button = tk.Button(self.users_menu_frame, command=lambda: self.switch_frame(Tools(self)),
+                                 text="Search tools").grid(column=0, row=4, sticky='nswe')
 
-        welcome_label = Label(self.welcome_frame, text='Hello, madafaka')
-        welcome_label.grid(column=0, row=0)
-
-        profile_label = Label(self.view_profile, text='this is the profile of a fucker')
-        profile_label.grid(column=0, row=0)
-
+        basket_button = tk.Button(self.users_menu_frame, command=lambda: self.switch_frame(Basket(self)),
+                                  text="Basket").grid(column=0, row=5, sticky='nswe')
 
 
         # the position of the frames in the main one
         self.users_menu_frame.grid(column=0, row=0, sticky='nswe')
         self.content_frame.grid(column=1, row=0, sticky='nswe')
-
 
     def switch_frame(self, frame):
         """
