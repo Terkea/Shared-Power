@@ -19,6 +19,7 @@ class App(tk.Frame):
 
         # set the content frame size to 800
         self.grid_columnconfigure(1, minsize=800)
+        self.rowconfigure(0, minsize=500)
 
         # create the frames
         self.users_menu_frame = Frame(self, background='red')
