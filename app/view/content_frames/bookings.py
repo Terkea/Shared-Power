@@ -12,6 +12,8 @@ class Bookings(tk.Frame):
         # create a new frame
         tk.Frame.__init__(self, root)
         label = Label(self, text="Bookings", font=(self.FONT, self.TITLE_SIZE)).pack(side='top')
+        return_button = Button(self, text="Return tool").pack(anchor='w')
+        report_button = Button(self, text="Report tool").pack(anchor='e')
         self.createTable()
         self.loadTable()
 
@@ -25,20 +27,24 @@ class Bookings(tk.Frame):
 
         tv.configure(yscrollcommand=vsb.set)
 
-        tv['columns'] = ('starttime', 'endtime', 'status')
-        tv.heading("#0", text='Sources', anchor='w')
+        tv['columns'] = ('return_date', 'cost', 'delivery')
+
+        tv.heading("#0", text='Booked date', anchor='w')
         tv.column("#0", anchor="w")
-        tv.heading('starttime', text='Start Time')
-        tv.column('starttime', anchor='center', width=100)
-        tv.heading('endtime', text='End Time')
-        tv.column('endtime', anchor='center', width=100)
-        tv.heading('status', text='Status')
-        tv.column('status', anchor='center', width=100)
+
+        tv.heading('return_date', text='Due return date')
+        tv.column('return_date', anchor='center', width=100)
+
+        tv.heading('cost', text='Cost')
+        tv.column('cost', anchor='center', width=100)
+
+        tv.heading('delivery', text='Delivery/Collection')
+        tv.column('delivery', anchor='center', width=100)
+
         tv.pack(fill=BOTH, expand=1)
         self.treeview = tv
 
 
     def loadTable(self):
         for i in range(100):
-            self.treeview.insert('', 'end', text=f"First {i}", values=('10:00',
-                                                                  '10:10', 'Ok'))
+            self.treeview.insert('', 'end', text=f"Date {i}", values=('Return', 'cost', 'yes'))
