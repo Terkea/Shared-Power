@@ -9,7 +9,6 @@ import app.models.booking
 import app.models.returns
 import app.models.invoices
 import app.models.investigation
-import app.models.dispatch
 import app.models.checkout
 
 # establish the connection

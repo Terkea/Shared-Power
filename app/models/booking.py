@@ -11,13 +11,13 @@ class Booking(Base):
     condition = Column(String(255))
     booked_date = Column(String(255))
     return_date = Column(String(255))
+    delivery = Column(Boolean())
     duration_of_booking = Column(String(255), nullable=False)
     tool_id = Column(Integer, ForeignKey('tools.id'), nullable=False)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     # foreign keys
     returns = relationship("Returns")
     invoices = relationship("Invoices")
-    dispatch = relationship("Dispatch")
 
     def __repr__(self):
         return str(self.__dict__)

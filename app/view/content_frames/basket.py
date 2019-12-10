@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter.ttk import *
 
 from app.models import session
+from app.models.booking import Booking
 from app.models.checkout import Checkout
 from app.models.tools import Tools
 from app.models.users import Users
@@ -22,8 +23,23 @@ class Basket(tk.Frame):
         tk.Frame.__init__(self, root)
         label = Label(self, text="Basket", font=(self.FONT, self.TITLE_SIZE)).pack(side='top')
         delete_button = Button(self, text="Delete item", command=self.delete_item).pack(anchor='w')
-        confirm_button = Button(self, text="Confirm order").pack(anchor='w')
+        confirm_button = Button(self, text="Confirm order", command=self.checkout_items).pack(anchor='w')
         self.createTable()
+        self.loadTable()
+
+
+    def checkout_items(self):
+        print('hit')
+        user_items = session.query(Checkout).filter(Checkout.user_id == self.CURRENT_USER.id)
+        for item in user_items:
+            new_booking = Booking(booked_date=item.booked_date, duration_of_booking=item.duration_of_booking,
+                                  tool_id=item.tool_id, user_id=item.user_id, delivery=item.delivery)
+            session.add(new_booking)
+
+            session.delete(item)
+            session.commit()
+
+        self.treeview.delete(*self.treeview.get_children())
         self.loadTable()
 
 

@@ -8,7 +8,6 @@ from sqlalchemy import DateTime
 
 from app.models import session
 from app.models.booking import Booking
-from app.models.dispatch import Dispatch
 from app.models.returns import Returns
 from app.models.tools import Tools
 from app.models.users import Users
@@ -70,7 +69,7 @@ class Bookings(tk.Frame):
         tv.heading('cost', text='Cost')
         tv.column('cost', anchor='center', width=100)
 
-        tv.heading('delivery', text='Delivery/Collection')
+        tv.heading('delivery', text='Delivery')
         tv.column('delivery', anchor='center', width=100)
 
         tv.pack(fill=BOTH, expand=1)
@@ -91,9 +90,10 @@ class Bookings(tk.Frame):
                 "duration_of_booking": book.duration_of_booking,
                 "tool_id": book.tool_id,
                 "user_id": book.user_id,
+                "delivery": book.delivery,
                 "tool_name": tool.name,
                 "tool_daily_price": tool.daily_price,
-                "tool_half_day_price": tool.half_day_price
+                "tool_half_day_price": tool.half_day_price,
             }
 
             # if the customer books a tool for x days + half day we write in in db as x.5
@@ -112,15 +112,9 @@ class Bookings(tk.Frame):
             except:
                 data['return_date'] = book.return_date
 
-            try:
-                dispatch = session.query(Dispatch).filter_by(booking_id=book.id).first()
-                data['delivery'] = f"Delivery on {dispatch.dispatch_datetime}"
-                try:
-                    data['cost'] += float(tool.delivery_cost)
-                except:
-                    pass
-            except:
-                data['delivery'] = "Collect"
+            if book.delivery == True:
+                data['cost'] += float(tool.delivery_cost)
+
 
             _user_bookings.append(data)
 
