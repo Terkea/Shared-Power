@@ -10,7 +10,6 @@ class Booking(Base):
     id = Column(Integer, primary_key=True)
     condition = Column(String(255))
     booked_date = Column(String(255))
-    return_date = Column(String(255))
     delivery = Column(Boolean())
     duration_of_booking = Column(String(255), nullable=False)
     tool_id = Column(Integer, ForeignKey('tools.id'), nullable=False)

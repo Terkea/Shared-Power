@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import *
 from tkinter.ttk import *
-from datetime import datetime
+from datetime import datetime, timedelta
 from tokenize import Double
 
 from sqlalchemy import DateTime
@@ -110,7 +110,8 @@ class Bookings(tk.Frame):
                 if return_date.returned == True:
                     data['return_date'] = "Returned"
             except:
-                data['return_date'] = book.return_date
+                data['return_date'] = datetime.strptime(book.booked_date, '%Y-%m-%d') +\
+                                      timedelta(round(float(book.duration_of_booking)))
 
             if book.delivery == True:
                 data['cost'] += float(tool.delivery_cost)
