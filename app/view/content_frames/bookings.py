@@ -112,6 +112,10 @@ class Bookings(tk.Frame):
             try:
                 dispatch = session.query(Dispatch).filter_by(booking_id=book.id).first()
                 data['delivery'] = f"Delivery on {dispatch.dispatch_datetime}"
+                try:
+                    data['cost'] += float(tool.delivery_cost)
+                except:
+                    pass
                 print(dispatch.dispatch_datetime)
             except:
                 data['delivery'] = "Collect"
