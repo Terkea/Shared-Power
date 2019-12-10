@@ -15,20 +15,16 @@ from app.models.users import Users
 
 class Bookings(tk.Frame):
 
-    def __init__(self, root, user):
+    def __init__(self, root, *args, **kwargs):
         self.FONT = 'Helvetica'
         self.TITLE_SIZE = 24
 
         # this is for testing purposes only
         # grab the user with the specified id to query for his bookings
-        self.CURRENT_USER = session.query(Users).filter_by(id=1).first()
+        self.CURRENT_USER = session.query(Users).filter_by(id=kwargs['user_id']).first()
 
         # create a new frame
         tk.Frame.__init__(self, root)
-
-
-        print(user)
-
 
 
         label = Label(self, text="Bookings", font=(self.FONT, self.TITLE_SIZE)).pack(side='top')

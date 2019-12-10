@@ -11,7 +11,7 @@ from app.models.users import Users
 
 class Basket(tk.Frame):
 
-    def __init__(self, root):
+    def __init__(self, root, *args, **kwargs):
         self.FONT = 'Helvetica'
         self.TITLE_SIZE = 24
 

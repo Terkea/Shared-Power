@@ -4,7 +4,7 @@ from tkinter import Frame, Label, Entry, Button
 
 class Tools(tk.Frame):
 
-    def __init__(self, root):
+    def __init__(self, root, *args, **kwargs):
         # create a new frame
         tk.Frame.__init__(self, root, background= 'orange')
         welcome_label = Label(self, text='Tools')

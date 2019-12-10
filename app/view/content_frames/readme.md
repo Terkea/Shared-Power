@@ -8,7 +8,7 @@ To create a new frame just follow this template
 ```python3
 class Tools(tk.Frame):
 
-    def __init__(self, root):
+    def __init__(self, root, *args, **kwargs):
         # create a new frame
         tk.Frame.__init__(self, root, background= 'orange')
         welcome_label = Label(self, text='Tools')
@@ -26,5 +26,5 @@ To bind the new frame with a method you'll need a swap method like the one we're
 
 To trigger this on events I used 
 ```python3
-command=lambda: self.switch_frame(Tools(self))
+command=lambda: self.switch_frame(Tools(self, user_id= USER_ID_VALUE))
 ```
