@@ -18,7 +18,7 @@ class Users(Base):
     password = Column(String(255), nullable=False)
     # add the foreign keys
     tools = relationship("Tools")
-    bookings = relationship("Bookings")
+    bookings = relationship("Booking")
     investigation = relationship("Investigation")
 
     def __repr__(self):

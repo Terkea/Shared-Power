@@ -5,7 +5,7 @@ from app.models.base import Base
 # For each model import it
 import app.models.users
 import app.models.tools
-import app.models.bookings
+import app.models.booking
 import app.models.returns
 import app.models.invoices
 import app.models.investigation

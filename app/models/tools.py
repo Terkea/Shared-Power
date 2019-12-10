@@ -15,7 +15,7 @@ class Tools(Base):
     availability = Column(Boolean(), nullable=False)
     owner_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     #     add foreign keys
-    bookings = relationship("Bookings")
+    bookings = relationship("Booking")
     investigation = relationship("Investigation")
 
     def __repr__(self):
