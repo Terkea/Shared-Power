@@ -14,6 +14,10 @@ class App(tk.Frame):
     def __init__(self, root):
         # create a new frame
         tk.Frame.__init__(self, root)
+
+        # user
+        self.USER = 1
+
         # frame size
         root.geometry('1000x500')
 
@@ -55,7 +59,7 @@ class App(tk.Frame):
         invoices_button = tk.Button(self.users_menu_frame, command=lambda: self.switch_frame(Invoices(self)),
                                     text="Invoices").grid(column=0, row=2, sticky='nswe')
 
-        bookings_button = tk.Button(self.users_menu_frame, command=lambda: self.switch_frame(Bookings(self)),
+        bookings_button = tk.Button(self.users_menu_frame, command=lambda: self.switch_frame(Bookings(self, user='USER_ID')),
                                     text="View bookings").grid(column=0, row=3, sticky='nswe')
 
         tools_button = tk.Button(self.users_menu_frame, command=lambda: self.switch_frame(Tools(self)),

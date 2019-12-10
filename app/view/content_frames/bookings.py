@@ -15,7 +15,7 @@ from app.models.users import Users
 
 class Bookings(tk.Frame):
 
-    def __init__(self, root):
+    def __init__(self, root, user):
         self.FONT = 'Helvetica'
         self.TITLE_SIZE = 24
 
@@ -25,6 +25,12 @@ class Bookings(tk.Frame):
 
         # create a new frame
         tk.Frame.__init__(self, root)
+
+
+        print(user)
+
+
+
         label = Label(self, text="Bookings", font=(self.FONT, self.TITLE_SIZE)).pack(side='top')
         return_button = Button(self, text="Return tool", command=self.return_tool).pack(anchor='w')
         report_button = Button(self, text="Report tool").pack(anchor='w')
