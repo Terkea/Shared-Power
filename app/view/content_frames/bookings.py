@@ -16,7 +16,6 @@ from app.models.users import Users
 
 class Bookings(tk.Frame):
 
-
     def __init__(self, root):
         self.FONT = 'Helvetica'
         self.TITLE_SIZE = 24
@@ -28,12 +27,23 @@ class Bookings(tk.Frame):
         # create a new frame
         tk.Frame.__init__(self, root)
         label = Label(self, text="Bookings", font=(self.FONT, self.TITLE_SIZE)).pack(side='top')
-        return_button = Button(self, text="Return tool").pack(anchor='w')
+        return_button = Button(self, text="Return tool", command=self.return_tool).pack(anchor='w')
         report_button = Button(self, text="Report tool").pack(anchor='w')
         self.createTable()
         self.loadTable()
 
+    def return_tool(self):
+        """
+        return the tool from the selected booking
+        """
+        id = self.treeview.item(self.treeview.selection(), "text")
+        return_tool = Returns(returned=True, booking_id=id)
 
+        session.add(return_tool)
+        session.commit()
+
+        self.treeview.delete(*self.treeview.get_children())
+        self.loadTable()
 
     def createTable(self):
         tv = Treeview(self)
@@ -43,10 +53,13 @@ class Bookings(tk.Frame):
 
         tv.configure(yscrollcommand=vsb.set)
 
-        tv['columns'] = ('return_date', 'cost', 'delivery')
+        tv['columns'] = ('booked_date', 'return_date', 'cost', 'delivery')
 
-        tv.heading("#0", text='Booked date', anchor='w')
-        tv.column("#0", anchor="w")
+        tv.heading("#0", text='ID', anchor='w')
+        tv.column("#0", anchor="w", width=10)
+
+        tv.heading('booked_date', text='Booked date')
+        tv.column('booked_date', anchor='center', width=100)
 
         tv.heading('return_date', text='Due return date')
         tv.column('return_date', anchor='center', width=100)
@@ -63,7 +76,7 @@ class Bookings(tk.Frame):
 
     def loadTable(self):
         _user_bookings = []
-        user_bookings = session.query(Booking).filter(Booking.user_id==self.CURRENT_USER.id)
+        user_bookings = session.query(Booking).filter(Booking.user_id == self.CURRENT_USER.id)
 
         # join the tables
         for book in user_bookings:
@@ -107,5 +120,6 @@ class Bookings(tk.Frame):
         print(_user_bookings)
 
         for booking in _user_bookings:
-            self.treeview.insert('', 'end', text=booking['booked_date'],
-                                 values=(booking['return_date'], booking['cost'], booking['delivery']))
+            self.treeview.insert('', 'end', text=booking['id'],
+                                 values=(
+                                 booking['booked_date'], booking['return_date'], booking['cost'], booking['delivery']))
