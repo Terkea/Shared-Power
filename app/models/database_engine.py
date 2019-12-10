@@ -10,6 +10,7 @@ import app.models.returns
 import app.models.invoices
 import app.models.investigation
 import app.models.dispatch
+import app.models.checkout
 
 # establish the connection
 # the engine can be easily changed, for know I left it as SQLite since it's easier when working on a group project

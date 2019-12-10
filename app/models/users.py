@@ -20,6 +20,7 @@ class Users(Base):
     tools = relationship("Tools")
     bookings = relationship("Booking")
     investigation = relationship("Investigation")
+    checkout = relationship("Checkout")
 
     def __repr__(self):
         return str(self.__dict__)

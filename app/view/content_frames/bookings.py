@@ -53,10 +53,13 @@ class Bookings(tk.Frame):
 
         tv.configure(yscrollcommand=vsb.set)
 
-        tv['columns'] = ('booked_date', 'return_date', 'cost', 'delivery')
+        tv['columns'] = ('tool_name', 'booked_date', 'return_date', 'cost', 'delivery')
 
         tv.heading("#0", text='ID', anchor='w')
         tv.column("#0", anchor="w", width=10)
+
+        tv.heading('tool_name', text='Tool name')
+        tv.column('tool_name', anchor='center', width=100)
 
         tv.heading('booked_date', text='Booked date')
         tv.column('booked_date', anchor='center', width=100)
@@ -116,14 +119,12 @@ class Bookings(tk.Frame):
                     data['cost'] += float(tool.delivery_cost)
                 except:
                     pass
-                print(dispatch.dispatch_datetime)
             except:
                 data['delivery'] = "Collect"
 
             _user_bookings.append(data)
-        print(_user_bookings)
 
         for booking in _user_bookings:
             self.treeview.insert('', 'end', text=booking['id'],
-                                 values=(
+                                 values=(booking['tool_name'],
                                  booking['booked_date'], booking['return_date'], booking['cost'], booking['delivery']))
