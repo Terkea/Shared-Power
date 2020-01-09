@@ -34,13 +34,14 @@ class App(tk.Frame):
 
         # create the frames
         self.users_menu_frame = Frame(self, background='red')
+        self.supplier_menu_frame = Frame(self, background='blue')
         self.welcome_frame = Frame(self, background='blue')
         self.view_profile = Frame(self, background='green')
 
         # this is the frame that the user will see when they log in
         self.content_frame = Welcome(self)
 
-        # column/row configurations for menu frame
+        # column/row configurations for user menu frame
         self.users_menu_frame.grid_columnconfigure(0, minsize=150)
         self.users_menu_frame.grid_rowconfigure(0, minsize=50)
         self.users_menu_frame.grid_rowconfigure(1, minsize=40)
@@ -49,8 +50,14 @@ class App(tk.Frame):
         self.users_menu_frame.grid_rowconfigure(4, minsize=40)
         self.users_menu_frame.grid_rowconfigure(5, minsize=40)
 
+        # column/row configurations for supplier menu frame
+        self.supplier_menu_frame.grid_columnconfigure(0, minsize=150)
+        self.supplier_menu_frame.grid_rowconfigure(0, minsize=50)
+        self.supplier_menu_frame.grid_rowconfigure(1, minsize=40)
+
         # items for menu frame
-        hello_label = tk.Label(self.users_menu_frame, text='Hello, User').grid(column=0, row=0, sticky='nswe')
+        hello_label = tk.Label(self.users_menu_frame, text=f"Hello, {self.USER.first_name}").\
+            grid(column=0, row=0, sticky='nswe')
 
         view_profile_button = tk.Button(self.users_menu_frame, text="View Profile", command=lambda: self.switch_frame(
             View_Profile(self, user_id=self.USER.id)))\
@@ -72,8 +79,20 @@ class App(tk.Frame):
             Basket(self, user_id=self.USER.id)), text="Basket")\
             .grid(column=0, row=5, sticky='nswe')
 
+        # items for supplier frame
+        hello_label = tk.Label(self.supplier_menu_frame, text=f"Hello, {self.USER.first_name}"). \
+            grid(column=0, row=0, sticky='nswe')
+        view_tools = tk.Button(self.supplier_menu_frame, text="View Tools", command=lambda: self.switch_frame(
+            View_Profile(self, user_id=self.USER.id))) \
+            .grid(column=0, row=1, sticky='nswe')
+
         # the position of the frames in the main one
-        self.users_menu_frame.grid(column=0, row=0, sticky='nswe')
+
+        if self.USER.is_supplier:
+            self.supplier_menu_frame.grid(column=0, row=0, sticky='nswe')
+        else:
+            self.users_menu_frame.grid(column=0, row=0, sticky='nswe')
+
         self.content_frame.grid(column=1, row=0, sticky='nswe')
 
     def switch_frame(self, frame):
