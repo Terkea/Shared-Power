@@ -1,1 +1,2 @@
-sqlalchemy
+SQLAlchemy==1.3.12
+werkzeug

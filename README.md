@@ -10,3 +10,10 @@ Returning a tool late is fined at double the day rate for every day it is missin
 Invoices are produced for all users on a monthly basis.  The invoice includes the hire charges for that month together with any delivery costs and late fees. A flat charge of £5 is added to all bills for insurance.
 
 When tools are booked in or out notes (and possibly photos) on the condition of the tool are uploaded to the system. If there is a serious issue of damage or wear with a unit, then the insurance company investigates to determine who is at fault and if necessary pays for the repair of the tool.  When tools are being repaired they are unavailable for hire.
+
+# Requirements
+To install the requirements necessarily to run this project run the following command
+
+```
+pip install -r requirements.txt
+```
