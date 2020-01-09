@@ -11,12 +11,12 @@ from app.view.content_frames.welcome import Welcome
 
 class App(tk.Frame):
 
-    def __init__(self, root):
+    def __init__(self, root, *args, **kwargs):
         # create a new frame
         tk.Frame.__init__(self, root)
 
         # user
-        self.USER = 1
+        self.USER = kwargs['user'].id
 
         # frame size
         root.geometry('1000x500')
