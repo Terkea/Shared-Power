@@ -16,7 +16,7 @@ class App(tk.Frame):
         tk.Frame.__init__(self, root)
 
         # user
-        self.USER = kwargs['user'].id
+        self.USER = kwargs['user']
 
         # frame size
         root.geometry('1000x500')
@@ -53,23 +53,23 @@ class App(tk.Frame):
         hello_label = tk.Label(self.users_menu_frame, text='Hello, User').grid(column=0, row=0, sticky='nswe')
 
         view_profile_button = tk.Button(self.users_menu_frame, text="View Profile", command=lambda: self.switch_frame(
-            View_Profile(self, user_id=1)))\
+            View_Profile(self, user_id=self.USER.id)))\
             .grid(column=0, row=1, sticky='nswe')
 
         invoices_button = tk.Button(self.users_menu_frame, command=lambda: self.switch_frame(
-            Invoices(self, user_id=1)),text="Invoices")\
+            Invoices(self, user_id=self.USER.id)),text="Invoices")\
             .grid(column=0, row=2, sticky='nswe')
 
         bookings_button = tk.Button(self.users_menu_frame, command=lambda: self.switch_frame(
-            Bookings(self, user_id=1)), text="View bookings")\
+            Bookings(self, user_id=self.USER.id)), text="View bookings")\
             .grid(column=0, row=3, sticky='nswe')
 
         tools_button = tk.Button(self.users_menu_frame, command=lambda: self.switch_frame(
-            Tools(self, user_id=1)), text="Search tools")\
+            Tools(self, user_id=self.USER.id)), text="Search tools")\
             .grid(column=0, row=4, sticky='nswe')
 
         basket_button = tk.Button(self.users_menu_frame, command=lambda: self.switch_frame(
-            Basket(self, user_id=1)), text="Basket")\
+            Basket(self, user_id=self.USER.id)), text="Basket")\
             .grid(column=0, row=5, sticky='nswe')
 
         # the position of the frames in the main one

@@ -17,7 +17,7 @@ class Basket(tk.Frame):
 
         # this is for testing purposes only
         # grab the user with the specified id to query for his bookings
-        self.CURRENT_USER = session.query(Users).filter_by(id=1).first()
+        self.CURRENT_USER = session.query(Users).filter_by(id=kwargs['user_id']).first()
 
         # create a new frame
         tk.Frame.__init__(self, root)
