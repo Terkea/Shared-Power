@@ -3,6 +3,7 @@ from tkinter import Frame, Label, Entry, Button
 
 from app.view.content_frames.basket import Basket
 from app.view.content_frames.bookings import Bookings
+from app.view.content_frames.create_tool import CreateTool
 from app.view.content_frames.invoices import Invoices
 from app.view.content_frames.manage_tools import ManageTools
 from app.view.content_frames.tools import Tools
@@ -55,6 +56,8 @@ class App(tk.Frame):
         self.supplier_menu_frame.grid_columnconfigure(0, minsize=150)
         self.supplier_menu_frame.grid_rowconfigure(0, minsize=50)
         self.supplier_menu_frame.grid_rowconfigure(1, minsize=40)
+        self.supplier_menu_frame.grid_rowconfigure(2, minsize=40)
+        self.supplier_menu_frame.grid_rowconfigure(3, minsize=40)
 
         # items for menu frame
         hello_label = tk.Label(self.users_menu_frame, text=f"Hello, {self.USER.first_name}").\
@@ -87,6 +90,12 @@ class App(tk.Frame):
         view_tools = tk.Button(self.supplier_menu_frame, text="View Tools", command=lambda: self.switch_frame(
             ManageTools(self, user_id=self.USER.id))) \
             .grid(column=0, row=1, sticky='nswe')
+        add_tool = tk.Button(self.supplier_menu_frame, text="Add new tool", command=lambda: self.switch_frame(
+            CreateTool(self, user_id=self.USER.id))) \
+            .grid(column=0, row=2, sticky='nswe')
+        see_feedback = tk.Button(self.supplier_menu_frame, text="See feedback", command=lambda: self.switch_frame(
+            ManageTools(self, user_id=self.USER.id))) \
+            .grid(column=0, row=3, sticky='nswe')
 
 
         # the position of the frames in the main one
