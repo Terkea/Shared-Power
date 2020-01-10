@@ -4,6 +4,7 @@ from tkinter import Frame, Label, Entry, Button
 from app.view.content_frames.basket import Basket
 from app.view.content_frames.bookings import Bookings
 from app.view.content_frames.invoices import Invoices
+from app.view.content_frames.manage_tools import ManageTools
 from app.view.content_frames.tools import Tools
 from app.view.content_frames.view_profile import View_Profile
 from app.view.content_frames.welcome import Welcome
@@ -33,8 +34,8 @@ class App(tk.Frame):
         self.rowconfigure(0, minsize=500)
 
         # create the frames
-        self.users_menu_frame = Frame(self, background='red')
-        self.supplier_menu_frame = Frame(self, background='blue')
+        self.users_menu_frame = Frame(self)
+        self.supplier_menu_frame = Frame(self)
         self.welcome_frame = Frame(self, background='blue')
         self.view_profile = Frame(self, background='green')
 
@@ -82,12 +83,14 @@ class App(tk.Frame):
         # items for supplier frame
         hello_label = tk.Label(self.supplier_menu_frame, text=f"Hello, {self.USER.first_name}"). \
             grid(column=0, row=0, sticky='nswe')
+        # NOTE: the view has to be changed to the according one
         view_tools = tk.Button(self.supplier_menu_frame, text="View Tools", command=lambda: self.switch_frame(
-            View_Profile(self, user_id=self.USER.id))) \
+            ManageTools(self, user_id=self.USER.id))) \
             .grid(column=0, row=1, sticky='nswe')
 
-        # the position of the frames in the main one
 
+        # the position of the frames in the main one
+        # display the proper interface for each user
         if self.USER.is_supplier:
             self.supplier_menu_frame.grid(column=0, row=0, sticky='nswe')
         else:

@@ -38,7 +38,7 @@ class Login(tk.Frame):
     def check_credentials(self):
         # check if the inputs exist
         if self.email.get() != "" and self.password.get() != "":
-            # check if there's any user in the db with that username
+            # check if there's any user in the db with that email
             try:
                 _user = session.query(Users).filter_by(email=self.email.get()).first()
                 if _user:

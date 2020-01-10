@@ -80,6 +80,8 @@ class Bookings(tk.Frame):
 
     def loadTable(self):
         _user_bookings = []
+        # could use list comprehension to keep the syntax prettier but IDK how to do that with sql
+        # alchemy and I got no time to spend researching that
         user_bookings = session.query(Booking).filter(Booking.user_id == self.CURRENT_USER.id)
 
         # join the tables

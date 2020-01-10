@@ -7,7 +7,6 @@ from app.models.users import Users
 from werkzeug.security import generate_password_hash
 
 
-
 class Register(tk.Frame):
 
     def __init__(self, root):
@@ -70,7 +69,6 @@ class Register(tk.Frame):
         self.password_input.grid(row=9, column=1)
         self.check_password_input.grid(row=10, column=1)
 
-
         self.register_button = tk.Button(self, text="Register account", command=self.validate_inputs)
         self.register_button.grid(row=11, column=0)
 
@@ -106,12 +104,12 @@ class Register(tk.Frame):
         _user = session.query(Users).filter_by(email=self.email_input.get()).first()
 
         if _user == None:
-           pass
+            pass
         else:
             self.error_label.config(text="Email address already taken")
             validators['unique_email'] = False
 
-        # there is a better way to get this done but atm I'm just to tired, but as long as it works we'll be fine
+        # there is a better way to get this done but atm I'm just too tired, but as long as it works we'll be fine
         if validators["empty"] == True and validators["password_match"] == True and validators["unique_email"] == True:
             # add the user to the db
             new_user = Users()
@@ -130,7 +128,6 @@ class Register(tk.Frame):
 
             session.add(new_user)
             session.commit()
-            print("new user registered")
 
             # idk why but for some reason if you import this at the top of the file it will crash
             # I spent like 2 hours trying to fix this, so better don't touch it!!!
