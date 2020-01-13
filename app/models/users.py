@@ -21,6 +21,7 @@ class Users(Base):
     bookings = relationship("Booking")
     investigation = relationship("Investigation")
     checkout = relationship("Checkout")
+    invoices = relationship("Invoices")
 
     def __repr__(self):
         return str(self.__dict__)

@@ -16,7 +16,6 @@ class Booking(Base):
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     # foreign keys
     returns = relationship("Returns")
-    invoices = relationship("Invoices")
 
     def __repr__(self):
         return str(self.__dict__)

@@ -94,20 +94,24 @@ class Register(tk.Frame):
             if field == "":
                 self.error_label.config(text="Please fill all fields")
                 validators['empty'] = False
+            else:
+                validators['empty'] = True
 
         # check if the passwords match
-        if self.password_input.get() is not self.check_password_input.get():
+        if self.password_input.get() == self.check_password_input.get():
+            validators["password_match"] = True
+        else:
             self.error_label.config(text="Passwords doesnt match")
             validators["password_match"] = False
 
         # check if the email is available
         _user = session.query(Users).filter_by(email=self.email_input.get()).first()
 
-        if _user == None:
-            pass
-        else:
+        if _user is not None:
             self.error_label.config(text="Email address already taken")
             validators['unique_email'] = False
+        else:
+            validators["unique_email"] = True
 
         # there is a better way to get this done but atm I'm just too tired, but as long as it works we'll be fine
         if validators["empty"] == True and validators["password_match"] == True and validators["unique_email"] == True:
