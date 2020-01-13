@@ -2,9 +2,7 @@ import tkinter as tk
 from tkinter import *
 from tkinter.ttk import *
 from datetime import datetime, timedelta
-from tokenize import Double
 
-from sqlalchemy import DateTime
 
 from app.models import session
 from app.models.booking import Booking
@@ -27,24 +25,53 @@ class Bookings(tk.Frame):
         tk.Frame.__init__(self, root)
 
 
-        label = Label(self, text="Bookings", font=(self.FONT, self.TITLE_SIZE)).pack(side='top')
-        return_button = Button(self, text="Return tool", command=self.return_tool).pack(anchor='w')
-        report_button = Button(self, text="Report tool").pack(anchor='w')
+        self.title_label = Label(self, text="Bookings", font=(self.FONT, self.TITLE_SIZE))
+        self.title_label.pack(side='top')
+
+        self.return_button = Button(self, text="Return tool", command=self.return_tool_frame)
+        self.return_button.pack(anchor='w')
+
+        self.report_button = Button(self, text="Report tool")
+        self.report_button.pack(anchor='w')
+
         self.createTable()
         self.loadTable()
 
+    def return_tool_frame(self):
+        # grab the booking id to use it later
+        self.booking_id = self.treeview.item(self.treeview.selection(), "text")
+
+        # first of all we have to destroy all widgets within the frame
+        self.title_label.destroy()
+        self.return_button.destroy()
+        self.report_button.destroy()
+        self.treeview.destroy()
+
+        # repopulate the window with the appropiate widgets
+        self.title_label = Label(self, text="Return tool", font=(self.FONT, self.TITLE_SIZE))
+        self.title_label.pack(side='top')
+
+        self.subtitle = Label(self, text="Please write a few words to describe the tool condition")
+        self.subtitle.pack()
+        
+        self.feedback = tk.Text(self, height=10, width=20, font=(self.FONT, 12))
+        self.feedback.pack(fill=tk.BOTH)
+        
+        self.return_tool_button = Button(self, command=self.return_tool, text="Return tool")
+        self.return_tool_button.pack()
+
+        self.error_label = Label(self, text="")
+        self.error_label.pack()
+
     def return_tool(self):
-        """
-        return the tool from the selected booking
-        """
-        id = self.treeview.item(self.treeview.selection(), "text")
-        return_tool = Returns(returned=True, booking_id=id)
+        if not self.feedback.get('1.0', END) == "":
+            self.error_label.config(text="Please fill all fields")
+        return_tool = Returns(returned=True, booking_id=self.booking_id, tool_condition=self.feedback.get('1.0', END))
 
         session.add(return_tool)
         session.commit()
 
-        self.treeview.delete(*self.treeview.get_children())
-        self.loadTable()
+        self.error_label.config(text="Item returned successfully")
 
     def createTable(self):
         tv = Treeview(self)
@@ -74,7 +101,7 @@ class Bookings(tk.Frame):
         tv.heading('delivery', text='Delivery')
         tv.column('delivery', anchor='center', width=100)
 
-        tv.pack(fill=BOTH, expand=1)
+        tv.pack(fill=tk.BOTH, expand=1)
         self.treeview = tv
 
 

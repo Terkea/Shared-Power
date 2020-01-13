@@ -17,7 +17,7 @@ class CreateTool(tk.Frame):
         self.root = root
         self.CURRENT_USER = kwargs['user_id']
 
-        label = Label(self, text="Create new tool", font=(self.FONT, self.TITLE_SIZE)).grid(row =0, column=0)
+        label = Label(self, text="Create new tool", font=(self.FONT, self.TITLE_SIZE)).grid(row=0, column=0)
 
         # Labels
         self.name_label = Label(self, text="Name", font=(self.FONT, 12))
@@ -45,7 +45,7 @@ class CreateTool(tk.Frame):
         self.half_day_price_input.grid(row=4, column=1)
         self.delivery_price_input.grid(row=5, column=1)
 
-        self.create_tool_button = Button(self, text="Create tool", command= self.create_tool).grid(row=6, column=0)
+        self.create_tool_button = Button(self, text="Create tool", command=self.create_tool).grid(row=6, column=0)
 
         self.error_label = Label(self, text="", fg="red")
         self.error_label.grid(row=6, column=1)
