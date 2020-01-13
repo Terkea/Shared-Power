@@ -4,7 +4,7 @@ from tkinter import Frame, Label, Entry, Button
 from app.view.content_frames.basket import Basket
 from app.view.content_frames.bookings import Bookings
 from app.view.content_frames.create_tool import CreateTool
-from app.view.content_frames.invoices import Invoices
+from app.view.content_frames.invoice import Invoice
 from app.view.content_frames.manage_tools import ManageTools
 from app.view.content_frames.tools import Tools
 from app.view.content_frames.view_profile import View_Profile
@@ -68,7 +68,7 @@ class App(tk.Frame):
             .grid(column=0, row=1, sticky='nswe')
 
         invoices_button = tk.Button(self.users_menu_frame, command=lambda: self.switch_frame(
-            Invoices(self, user_id=self.USER.id)),text="Invoices")\
+            Invoice(self, user_id=self.USER.id)),text="Invoices")\
             .grid(column=0, row=2, sticky='nswe')
 
         bookings_button = tk.Button(self.users_menu_frame, command=lambda: self.switch_frame(
