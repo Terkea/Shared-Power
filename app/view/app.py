@@ -6,7 +6,7 @@ from app.view.content_frames.bookings import Bookings
 from app.view.content_frames.create_tool import CreateTool
 from app.view.content_frames.invoice import Invoice
 from app.view.content_frames.manage_tools import ManageTools
-from app.view.content_frames.tools import Tools
+from app.view.content_frames.tools import Tools, Tools_frame
 from app.view.content_frames.view_profile import View_Profile
 from app.view.content_frames.welcome import Welcome
 
@@ -76,7 +76,7 @@ class App(tk.Frame):
             .grid(column=0, row=3, sticky='nswe')
 
         tools_button = tk.Button(self.users_menu_frame, command=lambda: self.switch_frame(
-            Tools(self, user_id=self.USER.id)), text="Search tools")\
+            Tools_frame(self, user_id=self.USER.id)), text="Search tools")\
             .grid(column=0, row=4, sticky='nswe')
 
         basket_button = tk.Button(self.users_menu_frame, command=lambda: self.switch_frame(
