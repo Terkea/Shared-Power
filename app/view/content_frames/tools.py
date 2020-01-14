@@ -1,10 +1,12 @@
 import tkinter as tk
+import datetime
 from tkinter import *
 from tkinter.ttk import *
 
 from tkcalendar import DateEntry
 
 from app.models import session
+from app.models.booking import Booking
 from app.models.checkout import Checkout
 from app.models.tools import Tools
 
@@ -39,7 +41,6 @@ class Tools_frame(tk.Frame):
         self.createTable()
         self.loadTable()
 
-
     def search_tool(self):
         # grab the keyword from the search field
         keyword = self.search_field.get()
@@ -57,13 +58,12 @@ class Tools_frame(tk.Frame):
         for tool in _search_tools:
             self.treeview.insert('', 'end', text=tool.id,
                                  values=(tool.name,
-                                 tool.description, tool.daily_price + " GBP", tool.half_day_price + " GBP"))
-
+                                         tool.description, tool.daily_price + " GBP", tool.half_day_price + " GBP"))
 
     def book_tool_frame(self):
         self.tool_id = self.treeview.item(self.treeview.selection(), "text")
 
-        _tool = session.query(Tools).filter_by(id = self.tool_id).first()
+        _tool = session.query(Tools).filter_by(id=self.tool_id).first()
 
         # clear the frame
         self.title_label.destroy()
@@ -75,47 +75,66 @@ class Tools_frame(tk.Frame):
         # recreate the window
         self.title_label = Label(self, text="Order tool", font=(self.FONT, self.TITLE_SIZE))
         self.title_label.pack(side='top')
-        
+
         self.tool_name_label = Label(self, text=_tool.name)
         self.tool_name_label.pack()
 
         self.notice_label = Label(self, text="Starting from")
         self.notice_label.pack()
 
-        self.calendar = DateEntry(self, width=12, background='darkblue',
-                    foreground='white', borderwidth=2, year=2020)
+        today = datetime.date.today()
+        maxdate = today + datetime.timedelta(days=60)
+        self.calendar = DateEntry(self, width=12, maxdate=maxdate, mindate=today, background='darkblue',
+                                  foreground='white', disabledforeground='red', borderwidth=2, year=2020)
         self.calendar.pack()
 
         self.calendar_label = Label(self, text="For how many days would you like to rent the tool?")
         self.calendar_label.pack()
 
-        days = IntVar()
-        self.period_of_time = Combobox(self, textvariable=days)
+        self.how_many_days = IntVar()
+        self.period_of_time = Combobox(self, textvariable=self.how_many_days)
         self.period_of_time.pack()
         self.period_of_time["values"] = [1, 1.5, 2, 2.5, 3]
-        
+
         self.validation_label = Label(self, text="")
         self.validation_label.pack()
-        
+
         self.book_button = Button(self, command=self.book_tool, text="Add item to the basket")
         self.book_button.pack()
 
-        
-
-
-
     def book_tool(self):
-        self.tool_id = self.treeview.item(self.treeview.selection(), "text")
+        validators = {
+            "days": True,
+            "availability": True
+        }
 
-        order = Checkout()
-        order.user_id = self.CURRENT_USER
-        order.tool_id = self.tool_id
+        # validation
+        if self.how_many_days.get() == 0:
+            self.validation_label.config(text="You have to select a period of time for your booking")
+            validators['days'] = False
+        else:
+            validators["days"] = True
 
-        self.error_label.config(text="Item added to your basket")
+        # check the availability of the tool
+        # grab all the bookings for the selected tool
+        _bookings = session.query(Booking).filter(Booking.tool_id == self.tool_id).all()
+        print(_bookings)
 
-        print(self.CURRENT_USER, self.tool_id)
+        if validators['days'] == True and validators["availability"] == True:
+            order = Checkout()
+            order.user_id = self.CURRENT_USER
+            order.tool_id = self.tool_id
+            order.duration_of_booking = self.how_many_days.get()
+            order.booked_date = self.calendar.get()
 
+            session.add(order)
+            session.commit()
 
+            self.validation_label.config(text="Item added to basked")
+
+        # print(self.calendar.get())
+        # print(self.how_many_days.get())
+        # print(self.CURRENT_USER, self.tool_id)
 
     def createTable(self):
         tv = Treeview(self)
@@ -145,7 +164,6 @@ class Tools_frame(tk.Frame):
         tv.pack(fill=BOTH, expand=1)
         self.treeview = tv
 
-
     def loadTable(self):
         # get the tools and store them into this list
         # could use list comprehension to keep the syntax prettier but IDK how to do that with sql
@@ -157,4 +175,4 @@ class Tools_frame(tk.Frame):
         for tool in _tools:
             self.treeview.insert('', 'end', text=tool.id,
                                  values=(tool.name,
-                                 tool.description, tool.daily_price + " GBP", tool.half_day_price + " GBP"))
+                                         tool.description, tool.daily_price + " GBP", tool.half_day_price + " GBP"))
