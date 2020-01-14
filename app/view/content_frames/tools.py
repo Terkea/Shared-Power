@@ -91,10 +91,19 @@ class Tools_frame(tk.Frame):
         self.calendar_label = Label(self, text="For how many days would you like to rent the tool?")
         self.calendar_label.pack()
 
-        self.how_many_days = IntVar()
+        self.how_many_days = DoubleVar()
         self.period_of_time = Combobox(self, textvariable=self.how_many_days)
         self.period_of_time.pack()
         self.period_of_time["values"] = [1, 1.5, 2, 2.5, 3]
+
+        self.delivery_label = Label(self, text="Delivery?")
+        self.delivery_label.pack()
+
+        self.delivery = IntVar()
+        self.delivery_input = tk.Radiobutton(self, text="Yes", value=1, variable=self.delivery)
+        self.delivery_input.pack()
+        self.delivery_input2 = tk.Radiobutton(self, text="No", value=2, variable=self.delivery)
+        self.delivery_input2.pack()
 
         self.validation_label = Label(self, text="")
         self.validation_label.pack()
@@ -104,7 +113,7 @@ class Tools_frame(tk.Frame):
 
     def book_tool(self):
         validators = {
-            "days": True,
+            "days": False,
             "availability": True
         }
 
@@ -113,19 +122,42 @@ class Tools_frame(tk.Frame):
             self.validation_label.config(text="You have to select a period of time for your booking")
             validators['days'] = False
         else:
-            validators["days"] = True
+            validators["days"] = False
 
         # check the availability of the tool
         # grab all the bookings for the selected tool
         _bookings = session.query(Booking).filter(Booking.tool_id == self.tool_id).all()
-        print(_bookings)
+
+        already_booked = False
+        for booking in _bookings:
+            their_booking_day = booking.booked_date
+            their_period_of_time = booking.duration_of_booking
+            their_deltatime = datetime.datetime.strptime(their_booking_day, '%Y-%m-%d') +\
+                              datetime.timedelta(days=float(their_period_of_time))
+
+            my_booking_day = datetime.datetime.combine(self.calendar.get_date(), datetime.time.min)
+            my_period_of_time = self.period_of_time.get()
+            my_deltatime = my_booking_day + datetime.timedelta(days=float(my_period_of_time))
+
+            if their_deltatime > my_booking_day:
+                # the tool is booked in that daterange
+                self.validation_label.config(text=f"Somebody booked that tool in that daterange "
+                                                  f"{their_booking_day} - {their_deltatime}")
+                break
+            else:
+                validators["days"] = True
 
         if validators['days'] == True and validators["availability"] == True:
             order = Checkout()
             order.user_id = self.CURRENT_USER
             order.tool_id = self.tool_id
             order.duration_of_booking = self.how_many_days.get()
-            order.booked_date = self.calendar.get()
+            order.booked_date = self.calendar.get_date()
+
+            if self.delivery.get() == 1:
+                order.delivery = True
+            else:
+                order.delivery = False
 
             session.add(order)
             session.commit()
