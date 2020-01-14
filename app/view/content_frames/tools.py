@@ -79,15 +79,28 @@ class Tools_frame(tk.Frame):
         self.tool_name_label = Label(self, text=_tool.name)
         self.tool_name_label.pack()
 
-        self.calendar_label = Label(self, text="For how long would you like to rent the tool?")
-        self.calendar_label.pack()
-        
         self.notice_label = Label(self, text="Starting from")
         self.notice_label.pack()
 
         self.calendar = DateEntry(self, width=12, background='darkblue',
                     foreground='white', borderwidth=2, year=2020)
         self.calendar.pack()
+
+        self.calendar_label = Label(self, text="For how many days would you like to rent the tool?")
+        self.calendar_label.pack()
+
+        days = IntVar()
+        self.period_of_time = Combobox(self, textvariable=days)
+        self.period_of_time.pack()
+        self.period_of_time["values"] = [1, 1.5, 2, 2.5, 3]
+        
+        self.validation_label = Label(self, text="")
+        self.validation_label.pack()
+        
+        self.book_button = Button(self, command=self.book_tool, text="Add item to the basket")
+        self.book_button.pack()
+
+        
 
 
 
