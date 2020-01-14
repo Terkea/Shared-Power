@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import *
 from tkinter.ttk import *
 
+from tkcalendar import DateEntry
+
 from app.models import session
 from app.models.checkout import Checkout
 from app.models.tools import Tools
@@ -19,9 +21,10 @@ class Tools_frame(tk.Frame):
         # grab the user with the specified id to query for his tools
         self.CURRENT_USER = kwargs['user_id']
 
-        label = Label(self, text="Tools", font=(self.FONT, self.TITLE_SIZE)).pack(side='top')
+        self.title_label = Label(self, text="Tools", font=(self.FONT, self.TITLE_SIZE))
+        self.title_label.pack(side='top')
 
-        self.order_button = Button(self, command=self.book_tool, text="Order")
+        self.order_button = Button(self, command=self.book_tool_frame, text="Order")
         self.order_button.pack(anchor="w")
 
         self.search_field = Entry(self)
@@ -55,6 +58,37 @@ class Tools_frame(tk.Frame):
             self.treeview.insert('', 'end', text=tool.id,
                                  values=(tool.name,
                                  tool.description, tool.daily_price + " GBP", tool.half_day_price + " GBP"))
+
+
+    def book_tool_frame(self):
+        self.tool_id = self.treeview.item(self.treeview.selection(), "text")
+
+        _tool = session.query(Tools).filter_by(id = self.tool_id).first()
+
+        # clear the frame
+        self.title_label.destroy()
+        self.order_button.destroy()
+        self.search_field.destroy()
+        self.search_button.destroy()
+        self.treeview.destroy()
+
+        # recreate the window
+        self.title_label = Label(self, text="Order tool", font=(self.FONT, self.TITLE_SIZE))
+        self.title_label.pack(side='top')
+        
+        self.tool_name_label = Label(self, text=_tool.name)
+        self.tool_name_label.pack()
+
+        self.calendar_label = Label(self, text="For how long would you like to rent the tool?")
+        self.calendar_label.pack()
+        
+        self.notice_label = Label(self, text="Starting from")
+        self.notice_label.pack()
+
+        self.calendar = DateEntry(self, width=12, background='darkblue',
+                    foreground='white', borderwidth=2, year=2020)
+        self.calendar.pack()
+
 
 
     def book_tool(self):

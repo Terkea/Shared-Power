@@ -42,9 +42,9 @@ class App(tk.Frame):
 
         # this is the frame that the user will see when they log in
         if self.USER.is_supplier:
-            self.content_frame = Welcome(self)
+            self.content_frame = Welcome(self, user_id=self.USER.id)
         else:
-            self.content_frame = Tools_frame(self, user_id=self.USER.id)
+            self.content_frame = Welcome(self, user_id=self.USER.id)
 
         # column/row configurations for user menu frame
         self.users_menu_frame.grid_columnconfigure(0, minsize=150)
