@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter.ttk import *
 
 from app.models import session
+from app.models.checkout import Checkout
 from app.models.tools import Tools
 
 
@@ -20,17 +21,52 @@ class Tools_frame(tk.Frame):
 
         label = Label(self, text="Tools", font=(self.FONT, self.TITLE_SIZE)).pack(side='top')
 
-        self.order_button = Button(self, text="Order")
+        self.order_button = Button(self, command=self.book_tool, text="Order")
         self.order_button.pack(anchor="w")
 
         self.search_field = Entry(self)
         self.search_field.pack(fill=tk.BOTH)
 
-        self.search_button = Button(self, text="Search")
+        self.search_button = Button(self, command=self.search_tool, text="Search")
         self.search_button.pack(anchor="e")
+
+        self.error_label = Label(self, text="")
+        self.error_label.pack()
 
         self.createTable()
         self.loadTable()
+
+
+    def search_tool(self):
+        # grab the keyword from the search field
+        keyword = self.search_field.get()
+
+        # clear the table
+        self.treeview.delete(*self.treeview.get_children())
+
+        # repopulate the table with the search results
+        _search_tools = []
+        for tool in session.query(Tools).filter(Tools.name.like("%" + keyword + "%")):
+            _search_tools.append(tool)
+
+        print(_search_tools)
+
+        for tool in _search_tools:
+            self.treeview.insert('', 'end', text=tool.id,
+                                 values=(tool.name,
+                                 tool.description, tool.daily_price + " GBP", tool.half_day_price + " GBP"))
+
+
+    def book_tool(self):
+        self.tool_id = self.treeview.item(self.treeview.selection(), "text")
+
+        order = Checkout()
+        order.user_id = self.CURRENT_USER
+        order.tool_id = self.tool_id
+
+        self.error_label.config(text="Item added to your basket")
+
+        print(self.CURRENT_USER, self.tool_id)
 
 
 
@@ -64,9 +100,9 @@ class Tools_frame(tk.Frame):
 
 
     def loadTable(self):
-        # get the user tools and store them into this list
-        # # could use list comprehension to keep the syntax prettier but IDK how to do that with sql
-        # # alchemy and I got no time to spend researching that
+        # get the tools and store them into this list
+        # could use list comprehension to keep the syntax prettier but IDK how to do that with sql
+        # alchemy and I got no time to spend researching that
         _tools = []
         for tool in session.query(Tools):
             _tools.append(tool)
