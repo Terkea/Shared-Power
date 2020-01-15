@@ -1,21 +1,17 @@
-# day + booking_period
-# 2020/01/15 + 3
-import datetime
+import calendar
+from datetime import date, datetime
 
-x = datetime.datetime(2020, 1, 15)
-deltatime_other_booking = x + datetime.timedelta(days=2.5)
-print(f"other booking {x}")
-print(f"other booking deltatime {deltatime_other_booking}")
+today = date.today()
+test_date = datetime(2020, 1, 31)
+this_month = today.strftime("%m")
 
-# my_day + my_booking_period
-# 2020/01/16 + 1
-print("\n")
+def get_last_day_of_month(month):
+    return calendar.monthrange(2020, month)[1]
 
-y = datetime.datetime(2020, 1, 16)
-deltatime_my_booking = y + datetime.timedelta(days=1)
-print(f"my booking {y}")
-print(f"my booking deltatime {deltatime_my_booking}")
+# print(test_date.strftime("%d"))
+# print(last_day_of_month)
 
-print(f"AVAILABILITY: {deltatime_other_booking-deltatime_my_booking}")
-
-print(deltatime_other_booking > deltatime_my_booking)
+if int(test_date.strftime("%d")) is int(get_last_day_of_month(int(this_month))):
+    print("yee")
+else:
+    print("noo")

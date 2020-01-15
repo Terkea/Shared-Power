@@ -1,8 +1,7 @@
 import tkinter as tk
 from tkinter import *
 from tkinter.ttk import *
-from datetime import datetime, timedelta
-
+from datetime import datetime, timedelta, date
 
 from app.models import session
 from app.models.booking import Booking
@@ -64,9 +63,10 @@ class Bookings(tk.Frame):
         self.error_label.pack()
 
     def return_tool(self):
-        if not self.feedback.get('1.0', END) == "":
+        if self.feedback.get('1.0', END) == "":
             self.error_label.config(text="Please fill all fields")
-        return_tool = Returns(returned=True, booking_id=self.booking_id, tool_condition=self.feedback.get('1.0', END))
+        return_tool = Returns(returned=True, booking_id=self.booking_id,
+                              tool_condition=self.feedback.get('1.0', END), date=str(date.today()))
 
         session.add(return_tool)
         session.commit()

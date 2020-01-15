@@ -96,9 +96,9 @@ class App(tk.Frame):
         add_tool = tk.Button(self.supplier_menu_frame, text="Add new tool", command=lambda: self.switch_frame(
             CreateTool(self, user_id=self.USER.id))) \
             .grid(column=0, row=2, sticky='nswe')
-        see_feedback = tk.Button(self.supplier_menu_frame, text="See feedback", command=lambda: self.switch_frame(
-            ManageTools(self, user_id=self.USER.id))) \
-            .grid(column=0, row=3, sticky='nswe')
+        # see_feedback = tk.Button(self.supplier_menu_frame, text="See feedback", command=lambda: self.switch_frame(
+        #     ManageTools(self, user_id=self.USER.id))) \
+        #     .grid(column=0, row=3, sticky='nswe')
 
 
         # the position of the frames in the main one
