@@ -3,7 +3,7 @@ import tkinter as tk
 from app.view.login import Login
 
 
-class App(tk.Tk):
+class AppEngine(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
         self._frame = None
@@ -17,5 +17,5 @@ class App(tk.Tk):
         self._frame.pack()
 
 
-app = App()
+app = AppEngine()
 app.mainloop()
