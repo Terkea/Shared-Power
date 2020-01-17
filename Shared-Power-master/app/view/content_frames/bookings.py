@@ -77,7 +77,6 @@ class Bookings(tk.Frame):
             self.error_label.config(text="Please fill all fields")
         return_tool = Returns(id=uuid.uuid4().hex, returned=True, booking_id=self.booking_id,
                               tool_condition=self.feedback.get('1.0', END), return_date=str(date.today()))
-        session.delete(session.query(Booking).filter_by(id=self.booking_id).first())
         session.commit()
 
         session.add(return_tool)
@@ -121,7 +120,8 @@ class Bookings(tk.Frame):
         _user_bookings = []
         # could use list comprehension to keep the syntax prettier but IDK how to do that with sql
         # alchemy and I got no time to spend researching that
-        user_bookings = session.query(Booking).filter(Booking.user_id == self.CURRENT_USER.id)
+        user_bookings = session.query(Booking).filter(Booking.user_id == self.CURRENT_USER.id)\
+            .filter(Booking.id != Returns.id)
 
         # join the tables
         for book in user_bookings:
@@ -166,6 +166,7 @@ class Bookings(tk.Frame):
             self.treeview.insert('', 'end', text=booking['id'],
                                  values=(booking['tool_name'],
                                  booking['booked_date'], booking['return_date'], booking['cost'], booking['delivery']))
+
 
     def loadOwnerTable(self):
         _owner_bookings = []

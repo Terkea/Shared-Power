@@ -97,20 +97,25 @@ class OwnerTools(tk.Frame):
         tool.daily_price = tool_details[2]
         tool.half_day_price  = tool_details[3]
         tool.delivery_cost = tool_details[4]
+        tool.availability = True
         session.commit()
 
         self.loadTable()
 
     def confirmDelete(self):
-        confirm_window = Tk()
-        confirm_label = Label(confirm_window, text="Are you sure you want\nto delete this tool?")
-        yes_button = Button(confirm_window, text="Yes", command=lambda: self.removeTool(confirm_window))
-        no_button = Button(confirm_window, text="No", command=lambda: confirm_window.destroy())
+        id = self.treeview.item(self.treeview.selection(), "text")
+        if id == "":
+            pass
+        else:
+            confirm_window = Tk()
+            confirm_label = Label(confirm_window, text="Are you sure you want\nto delete this tool?")
+            yes_button = Button(confirm_window, text="Yes", command=lambda: self.removeTool(confirm_window))
+            no_button = Button(confirm_window, text="No", command=lambda: confirm_window.destroy())
 
-        confirm_label.grid(row=1, column=1, columnspan=2, padx=10, pady=10)
-        no_button.grid(row=2, column=1, padx=10, pady=10)
-        yes_button.grid(row=2, column=2, padx=10, pady=10)
-        confirm_window.mainloop()
+            confirm_label.grid(row=1, column=1, columnspan=2, padx=10, pady=10)
+            no_button.grid(row=2, column=1, padx=10, pady=10)
+            yes_button.grid(row=2, column=2, padx=10, pady=10)
+            confirm_window.mainloop()
 
     def getToolDetails(self, newORedit, error):
         new_tool_window = Tk()
@@ -119,12 +124,13 @@ class OwnerTools(tk.Frame):
         def submit():
             tool_details = []
             for entry in entry_list:
-                tool_details.append(entry.get())
+                if entry.get() == "":
+                    new_tool_window.destroy()
+                    self.getToolDetails(newORedit, True)
+                else:
+                    tool_details.append(entry.get())
 
             new_tool_window.destroy()
-            if tool_details[0] == "":
-                self.getToolDetails(newORedit, True)
-
             if newORedit == "new":
                 self.createTool(tool_details)
             else:
@@ -137,32 +143,44 @@ class OwnerTools(tk.Frame):
         if error:
             error_label.grid(row=2, column=1, padx=10, pady=5)
 
-        name_label = Label(new_tool_window, text="Tool Name:").grid(row=3, column=1, columnspan=2, padx=15, pady=5, sticky="s"+"w")
+        name_label = Label(new_tool_window, text="Tool Name:")\
+            .grid(row=3, column=1, columnspan=2, padx=15, pady=5, sticky="s"+"w")
         name_entry = Entry(new_tool_window)
         entry_list.append(name_entry)
         name_entry.grid(row=4, column=1, columnspan=2, padx=10, pady=5, sticky="n"+"w")
 
-        description_label = Label(new_tool_window, text="Tool Description:").grid(row=5, column=1, columnspan=2, padx=15, pady=5, sticky="s"+"w")
+        description_label = Label(new_tool_window, text="Tool Description:")\
+            .grid(row=5, column=1, columnspan=2, padx=15, pady=5, sticky="s"+"w")
         description_entry = Entry(new_tool_window)
         entry_list.append(description_entry)
         description_entry.grid(row=6, column=1, columnspan=2, padx=10, pady=5, sticky="n"+"w")
 
-        availability_label = Label(new_tool_window, text='')
-
-        daily_price_label = Label(new_tool_window, text="Day Hire Price:").grid(row=3, column=3, columnspan=2, padx=15, pady=5, sticky="s"+"w")
+        daily_price_label = Label(new_tool_window, text="Day Hire Price:")\
+            .grid(row=3, column=3, columnspan=2, padx=15, pady=5, sticky="s"+"w")
         daily_price_entry = Entry(new_tool_window)
         entry_list.append(daily_price_entry)
         daily_price_entry.grid(row=4, column=3, columnspan=2, padx=10, pady=5, sticky="n")
 
-        half_day_price_label = Label(new_tool_window, text="Half Day Price:").grid(row=5, column=3, columnspan=2, padx=15, pady=5, sticky="s"+"w")
+        half_day_price_label = Label(new_tool_window, text="Half Day Price:")\
+            .grid(row=5, column=3, columnspan=2, padx=15, pady=5, sticky="s"+"w")
         half_day_price_entry = Entry(new_tool_window)
         entry_list.append(half_day_price_entry)
         half_day_price_entry.grid(row=6, column=3, columnspan=2, padx=10, pady=5, sticky="n")
 
-        delivery_cost_label = Label(new_tool_window, text="Delivery Cost:").grid(row=7, column=3, columnspan=2, padx=15, pady=5, sticky="s"+"w")
+        delivery_cost_label = Label(new_tool_window, text="Delivery Cost:")\
+            .grid(row=7, column=3, columnspan=2, padx=15, pady=5, sticky="s"+"w")
         delivery_cost_entry = Entry(new_tool_window)
         entry_list.append(delivery_cost_entry)
         delivery_cost_entry.grid(row=8, column=3, columnspan=2, padx=10, pady=5, sticky="n")
+
+        #availability_label = Label(new_tool_window, text="Is the tool\navailable to order?")\
+        #   .grid(row=7, column=1, columnspan=2, padx=15, pady=5, sticky="s"+"w")
+        #_availability = BooleanVar
+        #available_yes = tk.Radiobutton(new_tool_window, text="Yes", value=1, variable=_availability)\
+        #    .grid(row=8, column=1, padx=5, pady=5)
+        #available_no = tk.Radiobutton(new_tool_window, text="No", value=2, variable=_availability)\
+        #    .grid(row=8, column=2, padx=5, pady=5)
+        #entry_list.append(_availability)
 
         new_tool_window.mainloop()
         self.loadTable()
