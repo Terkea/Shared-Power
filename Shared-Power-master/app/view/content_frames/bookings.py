@@ -76,7 +76,7 @@ class Bookings(tk.Frame):
         if self.feedback.get('1.0', END) == "":
             self.error_label.config(text="Please fill all fields")
         return_tool = Returns(id=uuid.uuid4().hex, returned=True, booking_id=self.booking_id,
-                              tool_condition=self.feedback.get('1.0', END), date=str(date.today()))
+                              tool_condition=self.feedback.get('1.0', END), return_date=str(date.today()))
         session.delete(session.query(Booking).filter_by(id=self.booking_id).first())
         session.commit()
 

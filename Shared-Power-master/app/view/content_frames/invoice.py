@@ -1,11 +1,13 @@
 import tkinter as tk
 from tkinter import Frame, Label, Entry, Button
 from tkinter.ttk import Treeview
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 
 from app.models import session
-from app.models.returns import Returns
 from app.models.booking import Booking
+from app.models.returns import Returns
+from app.models.tools import Tools
+from app.models.users import Users
 
 
 class Invoice(tk.Frame):
@@ -50,23 +52,29 @@ class Invoice(tk.Frame):
         tv.pack(fill=tk.BOTH, expand=1)
         self.treeview = tv
 
+
     def loadTable(self):
         _user_invoices = []
-        beginning_date = date.today().replace(day=1) - timedelta(month=1)
 
+        beginning_date = (date.today().replace(day=1) - timedelta(days=1)).replace(day=1)
 
-        _returns = session.query(Returns).filter(date <= beginning_date)
+        for _returns in session.query(Returns).filter(Returns.return_date <= beginning_date.strftime('%Y-%m-%d')):
+            invoice = []
+            _booking = session.query(Booking).filter(Booking.id == Returns.booking_id).first()
+            _tool = session.query(Tools).filter(Tools.id == Booking.tool_id).first()
+            _owner = session.query(Users).filter(Users.id == Tools.owner_id).first()
+            invoice.append(_tool.name)
+            invoice.append(_booking.user_id)
+            invoice.append(_owner.id)
 
-        if '.' in book.duration_of_booking:
-            data['cost'] = (int(book.duration_of_booking[:book.duration_of_booking.find('.')]) *
-                            float(tool.daily_price)
-                            + float(tool.half_day_price))
-        else:
-            data['cost'] = (int(book.duration_of_booking) * float(tool.daily_price))
-
-
-
+            cost = _booking.duration_of_booking*2*_tool.half_day_price
+            if _returns.date > _booking.booked_date + timedelta(days=float(_booking.duration_of_booking)):
+                late_days = _returns.date - (_booking.booked_date + timedelta(days=float(_booking.duration_of_booking)))
+                late_fees = _tool.daily_price*late_days.days
+                cost += late_fees
+            invoice.append(cost)
+            _user_invoices.append(invoice)
 
         for invoice in _user_invoices:
-            self.treeview.insert('', 'end', values=(invoice['tool_name'], invoice['customer_id'],
-                                                    invoice['owner_id'], invoice['total_cost'] + " GBP"))
+            self.treeview.insert('', 'end', values=(invoice[0], invoice[1],
+                                                    invoice[2], invoice[3] + " GBP"))

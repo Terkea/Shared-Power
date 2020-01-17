@@ -19,9 +19,7 @@ class Users(Base):
     # add the foreign keys
     tools = relationship("Tools", cascade="delete")
     bookings = relationship("Booking", cascade="delete")
-    investigation = relationship("Investigation", cascade="delete")
     checkout = relationship("Checkout", cascade="delete")
-    invoices = relationship("Invoices", cascade="delete")
 
     def __repr__(self):
         return str(self.__dict__)

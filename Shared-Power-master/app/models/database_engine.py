@@ -7,8 +7,6 @@ import app.models.users
 import app.models.tools
 import app.models.booking
 import app.models.returns
-import app.models.invoices
-import app.models.investigation
 import app.models.checkout
 
 # establish the connection

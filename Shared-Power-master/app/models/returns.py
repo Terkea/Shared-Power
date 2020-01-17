@@ -6,7 +6,7 @@ class Returns(Base):
     __tablename__ = 'returns'
     id = Column(String(255), primary_key=True)
     returned = Column(Boolean)
-    date = Column(String(255))
+    return_date = Column(String(255))
     tool_condition = Column(String(33000), nullable=False)
     booking_id = Column(String(255), ForeignKey('booking.id'), nullable=False)
 

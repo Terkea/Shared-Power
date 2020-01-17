@@ -17,7 +17,6 @@ class Tools(Base):
     owner_id = Column(String(255), ForeignKey('users.id'), nullable=False)
     #     add foreign keys
     bookings = relationship("Booking", cascade="delete")
-    investigation = relationship("Investigation", cascade="delete")
     checkout = relationship("Checkout", cascade="delete")
 
     def __repr__(self):

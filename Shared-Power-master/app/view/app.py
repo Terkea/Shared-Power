@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import Frame
+from tkinter import Frame, Label, Entry, Button
 
 from app.view.content_frames.basket import Basket
 from app.view.content_frames.bookings import Bookings
